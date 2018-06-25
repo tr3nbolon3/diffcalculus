@@ -1,8 +1,8 @@
 install:
-  npm install
+	npm install
 
 lint:
-  npm run eslit src
+	npm run eslint src
 
 publish:
-  npm publish
+	npm publish
