@@ -1,4 +1,4 @@
-﻿{
+{
     host: hexlet.io
   + timeout: 20
   - timeout: 50
