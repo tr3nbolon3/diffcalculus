@@ -6,3 +6,6 @@ lint:
 
 publish:
 	npm publish
+
+test:
+	npm t
