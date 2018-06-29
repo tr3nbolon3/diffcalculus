@@ -1,8 +1,15 @@
-import yaml from 'js-yaml';
+import { safeLoad } from 'js-yaml';
 
 const parsers = {
   '.json': JSON.parse,
-  '.yml': yaml.safeLoad,
+  '.yml': safeLoad,
+  '.yaml': safeLoad,
 };
 
-export default (fileExt, fileData) => parsers[fileExt](fileData);
+export default (format, data) => {
+  const parse = parsers[format];
+  if (!parse) {
+    throw new Error(`unkown format: ${format}`);
+  }
+  return parse(data);
+};
