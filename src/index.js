@@ -1,9 +1,11 @@
 import { readFileSync } from 'fs';
+import { extname } from 'path';
 import _ from 'lodash';
+import parse from './parser';
 
 export default (firstFilePath, secondFilePath) => {
-  const obj1 = JSON.parse(readFileSync(firstFilePath));
-  const obj2 = JSON.parse(readFileSync(secondFilePath));
+  const obj1 = parse(extname(firstFilePath), readFileSync(firstFilePath));
+  const obj2 = parse(extname(secondFilePath), readFileSync(secondFilePath));
 
   const keys = _.union(_.keys(obj1), _.keys(obj2));
 

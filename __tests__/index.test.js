@@ -1,11 +1,21 @@
 import { readFileSync } from 'fs';
 import genDiff from '../src';
 
-test('Compares flat files', () => {
-  const file1Path = '__tests__/__fixtures__/file1.json';
-  const file2Path = '__tests__/__fixtures__/file2.json';
+describe('Compares flat files', () => {
   const expectedFilePath = '__tests__/__fixtures__/expected.txt';
   const expected = readFileSync(expectedFilePath, 'utf8');
 
-  expect(genDiff(file1Path, file2Path)).toBe(expected);
+  test('json', () => {
+    const file1Path = '__tests__/__fixtures__/before.json';
+    const file2Path = '__tests__/__fixtures__/after.json';
+
+    expect(genDiff(file1Path, file2Path)).toBe(expected);
+  });
+
+  test('yml', () => {
+    const file1Path = '__tests__/__fixtures__/before.yml';
+    const file2Path = '__tests__/__fixtures__/after.yml';
+
+    expect(genDiff(file1Path, file2Path)).toBe(expected);
+  });
 });
