@@ -18,4 +18,11 @@ describe('Compares flat files', () => {
 
     expect(genDiff(file1Path, file2Path)).toBe(expected);
   });
+
+  test('ini', () => {
+    const file1Path = '__tests__/__fixtures__/before.ini';
+    const file2Path = '__tests__/__fixtures__/after.ini';
+
+    expect(genDiff(file1Path, file2Path)).toBe(expected);
+  });
 });
