@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 import genDiff from '../src';
-import ini from 'ini';
 
 describe('Compares flat files', () => {
   const expectedFilePath = '__tests__/__fixtures__/expected.txt';
@@ -49,7 +48,6 @@ describe('Recursive comparison', () => {
   test('ini', () => {
     const file1Path = '__tests__/__fixtures__/beforeNested.ini';
     const file2Path = '__tests__/__fixtures__/afterNested.ini';
-    console.log(ini.decode(readFileSync(file1Path, 'utf8')));
     expect(genDiff(file1Path, file2Path)).toBe(expected);
   });
 });
