@@ -8,7 +8,7 @@ const stringify = (value, depth = 1) => {
     return value;
   }
   const body = _.keys(value)
-    .map(key => `${' '.repeat(spaces)}${key}: ${stringify(value[key], depth)}`)
+    .map(key => `${' '.repeat(spaces)}${key}: ${stringify(value[key], depth + 1)}`)
     .join('\n');
   return `{\n${body}\n${' '.repeat(spaces - defaultSpaces)}}`;
 };
