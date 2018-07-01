@@ -15,7 +15,8 @@ const stringify = (value, depth = 1) => {
 
 const render = (ast, depth = 1) => {
   const spaces = defaultSpaces * depth;
-  const makeString = (name, value, char = ' ') => `${' '.repeat(spaces - 2)}${char} ${name}: ${stringify(value, depth + 1)}`;
+  const nextDepth = depth + 1;
+  const makeString = (name, value, char = ' ') => `${' '.repeat(spaces - 2)}${char} ${name}: ${stringify(value, nextDepth)}`;
 
   const typeActions = {
     unchanged: node => makeString(node.key, node.value),
@@ -25,7 +26,7 @@ const render = (ast, depth = 1) => {
     ],
     removed: node => makeString(node.key, node.value, '-'),
     added: node => makeString(node.key, node.value, '+'),
-    nested: node => `${' '.repeat(spaces)}${node.key}: ${render(node.children, depth + 1)}`,
+    nested: node => `${' '.repeat(spaces)}${node.key}: ${render(node.children, nextDepth)}`,
   };
 
   const diffStr = _.flatten(ast.map(node => typeActions[node.type](node))).join('\n');
