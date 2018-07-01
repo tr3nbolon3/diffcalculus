@@ -6,20 +6,20 @@ const makeValue = value => (_.isObject(value) ? 'complex value' : makeValueByTyp
 const render = (ast, parent = '') => {
   const makeString = (node, body = '') => `Property '${parent}${node.key}' was ${node.type}${body}`;
   const typeActions = {
-    unchanged: () => null,
     updated: (node) => {
       const body = `. From ${makeValue(node.oldValue)} to ${makeValue(node.newValue)}`;
       return makeString(node, body);
     },
     removed: node => makeString(node),
     added: (node) => {
-      const body = ` with ${_.isObject(node.value) ? 'complex value' : `value: ${makeValueByType(node.value)}`}`;
-      return makeString(node, body);
+      const stringify = ` with ${_.isObject(node.value) ? 'complex value' : `value: ${makeValueByType(node.value)}`}`;
+      return makeString(node, stringify);
     },
     nested: node => `${render(node.children, `${parent}${node.key}.`)}`,
   };
 
-  return ast.map(node => typeActions[node.type](node)).filter(n => n).join('\n');
+  const filtered = ast.filter(n => n.type !== 'unchanged');
+  return filtered.map(node => typeActions[node.type](node)).join('\n');
 };
 
 export default render;
