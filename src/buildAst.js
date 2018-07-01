@@ -14,7 +14,7 @@ const propertyActions = [
   {
     check: (obj1, obj2, key) => _.has(obj1, key) && _.has(obj2, key) && obj1[key] !== obj2[key],
     process: (property1, property2) => ({ oldValue: property1, newValue: property2 }),
-    type: 'changed',
+    type: 'updated',
   },
   {
     check: (obj1, obj2, key) => _.has(obj1, key) && !_.has(obj2, key),

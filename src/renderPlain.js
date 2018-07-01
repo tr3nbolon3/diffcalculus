@@ -1,20 +1,21 @@
 import _ from 'lodash';
 
-const getFormatedProp = prop => (_.isObject(prop) ? 'complex value' : `'${prop}'`);
+const makeValueByType = value => (typeof value === 'string' ? `'${value}'` : `${value}`);
+const makeValue = value => (_.isObject(value) ? 'complex value' : makeValueByType(value));
 
 const render = (ast, parent = '') => {
+  const makeString = (node, body = '') => `Property '${parent}${node.key}' was ${node.type}${body}`;
   const typeActions = {
     unchanged: () => null,
-    changed: node => [
-      `Property '${parent}${node.key}' was updated. `,
-      `From ${getFormatedProp(node.oldValue)} `,
-      `to ${getFormatedProp(node.newValue)}`,
-    ].join(''),
-    removed: node => `Property '${parent}${node.key}' was removed`,
-    added: node => [
-      `Property '${parent}${node.key}' was added with `,
-      `${_.isObject(node.value) ? 'complex value' : `value: '${node.value}'`}`,
-    ].join(''),
+    updated: (node) => {
+      const body = `. From ${makeValue(node.oldValue)} to ${makeValue(node.newValue)}`;
+      return makeString(node, body);
+    },
+    removed: node => makeString(node),
+    added: (node) => {
+      const body = ` with ${_.isObject(node.value) ? 'complex value' : `value: ${makeValueByType(node.value)}`}`;
+      return makeString(node, body);
+    },
     nested: node => `${render(node.children, `${parent}${node.key}.`)}`,
   };
 

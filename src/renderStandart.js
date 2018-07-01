@@ -18,7 +18,7 @@ const render = (ast, spaces = defaultSpaces) => {
 
   const typeActions = {
     unchanged: node => makeString(node.key, node.value),
-    changed: node => [
+    updated: node => [
       makeString(node.key, node.newValue, '+'),
       makeString(node.key, node.oldValue, '-'),
     ].join(''),
