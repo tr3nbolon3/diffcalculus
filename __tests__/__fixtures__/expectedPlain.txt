@@ -1,4 +1,4 @@
 Property 'timeout' was updated. From '50' to '20'
 Property 'proxy' was removed
 Property 'follow' was removed
-Property 'common.sites' was added with value: 'hexlet.io'
+Property 'verbose' was added with value: 'true'
