@@ -21,8 +21,8 @@ Options:
   -h, --help     output usage information
 ```
 
-### типы поддерживаемых файлов: *.ini, *.json, *.yml
-### типы вывода дифа: standart (по умолчанию), plain, json
+типы поддерживаемых файлов: *.ini, *.json, *.yml
+типы вывода дифа: standart (по умолчанию), plain, json
 
 ## Использоание как библиотеки
 ```npm install --save-dev diffcalculus```
