@@ -14,30 +14,20 @@ const stringify = (value, spaces = defaultSpaces) => {
 
 const render = (ast, spaces = defaultSpaces) => {
   const nextSpaces = spaces + defaultSpaces;
-  const diffStr = ast.map((node) => {
-    if (node.type === 'unchanged') {
-      return `${' '.repeat(spaces)}${node.key}: ${stringify(node.value, nextSpaces)}\n`;
-    }
-    if (node.type === 'changed') {
-      const result = [
-        `${' '.repeat(spaces - 2)}+ ${node.key}: ${stringify(node.newValue, nextSpaces)}\n`,
-        `${' '.repeat(spaces - 2)}- ${node.key}: ${stringify(node.oldValue, nextSpaces)}\n`,
-      ].join('');
+  const makeString = (name, value, char = ' ') => `${' '.repeat(spaces - 2)}${char} ${name}: ${stringify(value, nextSpaces)}\n`;
 
-      return result;
-    }
-    if (node.type === 'removed') {
-      return `${' '.repeat(spaces - 2)}- ${node.key}: ${stringify(node.value, nextSpaces)}\n`;
-    }
-    if (node.type === 'added') {
-      return `${' '.repeat(spaces - 2)}+ ${node.key}: ${stringify(node.value, nextSpaces)}\n`;
-    }
-    if (node.type === 'nested') {
-      return `${' '.repeat(spaces)}${node.key}: ${render(node.children, nextSpaces)}\n`;
-    }
-    return 'undef type';
-  }).join('');
+  const typeActions = {
+    unchanged: node => makeString(node.key, node.value),
+    changed: node => [
+      makeString(node.key, node.newValue, '+'),
+      makeString(node.key, node.oldValue, '-'),
+    ].join(''),
+    removed: node => makeString(node.key, node.value, '-'),
+    added: node => makeString(node.key, node.value, '+'),
+    nested: node => `${' '.repeat(spaces)}${node.key}: ${render(node.children, nextSpaces)}\n`,
+  };
 
+  const diffStr = ast.map(node => typeActions[node.type](node)).join('');
   return `{\n${diffStr}${' '.repeat(spaces - defaultSpaces)}}`;
 };
 
