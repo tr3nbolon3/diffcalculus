@@ -9,3 +9,6 @@ publish:
 
 test:
 	npm t
+
+watch:
+	npm t -- --watch
