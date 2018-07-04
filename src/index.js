@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { extname } from 'path';
 import parse from './parser';
-import buildAst from './buildAst';
+import buildAst from './builder';
 import render from './renderers';
 
 export default (firstFilePath, secondFilePath, format = 'standart') => {
