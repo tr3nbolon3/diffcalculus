@@ -1,5 +1,8 @@
 import _ from 'lodash';
 
+const bothHasProp = (obj1, obj2, propKey) => _.has(obj1, propKey) && _.has(obj2, propKey);
+const onlyFirstHasProp = (obj1, obj2, propKey) => _.has(obj1, propKey) && !_.has(obj2, propKey);
+
 const propertyActions = [
   {
     check: (obj1, obj2, key) => _.isObject(obj1[key]) && _.isObject(obj2[key]),
@@ -7,22 +10,22 @@ const propertyActions = [
     type: 'nested',
   },
   {
-    check: (obj1, obj2, key) => _.has(obj1, key) && _.has(obj2, key) && obj1[key] === obj2[key],
+    check: (obj1, obj2, key) => bothHasProp(obj1, obj2, key) && obj1[key] === obj2[key],
     process: property1 => ({ value: property1 }),
     type: 'unchanged',
   },
   {
-    check: (obj1, obj2, key) => _.has(obj1, key) && _.has(obj2, key) && obj1[key] !== obj2[key],
+    check: (obj1, obj2, key) => bothHasProp(obj1, obj2, key) && obj1[key] !== obj2[key],
     process: (property1, property2) => ({ oldValue: property1, newValue: property2 }),
     type: 'updated',
   },
   {
-    check: (obj1, obj2, key) => _.has(obj1, key) && !_.has(obj2, key),
+    check: (obj1, obj2, key) => onlyFirstHasProp(obj1, obj2, key),
     process: property1 => ({ value: property1 }),
     type: 'removed',
   },
   {
-    check: (obj1, obj2, key) => !_.has(obj1, key) && _.has(obj2, key),
+    check: (obj1, obj2, key) => onlyFirstHasProp(obj2, obj1, key),
     process: (property1, property2) => ({ value: property2 }),
     type: 'added',
   },
